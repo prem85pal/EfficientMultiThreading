@@ -42,17 +42,16 @@ public class DaemonThreadsUsingExecutors {
         fixedThreadPool.execute(() -> {
             System.out.println("Logic of thread");
             System.out.println(Thread.currentThread().isDaemon());
-            System.out.println(Thread.currentThread().getName());
+            System.out.println(Thread.currentThread().getName()); //thread-0
         });
 
         fixedThreadPool.execute(() -> {
             System.out.println("Logic of thread");
             System.out.println(Thread.currentThread().isDaemon());
-            System.out.println(Thread.currentThread().getName());
+            System.out.println(Thread.currentThread().getName());//thread-1
         });
 
         fixedThreadPool.shutdown();
-
     }
 
 }

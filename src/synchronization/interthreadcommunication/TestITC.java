@@ -13,10 +13,8 @@ public class TestITC {
             }
         }.start();
 
-        new Thread("DepositThread") {
-            public void run() {
-                c.deposit(10000);
-            }
-        }.start();
+        new Thread(() -> {
+            c.deposit(10000);
+        }, "DepositThread").start();
     }
 }
