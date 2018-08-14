@@ -9,12 +9,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Thread thread1 = new Thread("t1") {
-            @Override
-            public void run() {
-                table.printTable(2);
-            }
-        };
+        Thread thread1 = new Thread(() -> {
+            table.printTable(2);
+        }, "t1");
         thread1.start();
 
 

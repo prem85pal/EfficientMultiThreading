@@ -1,6 +1,9 @@
 package Class12PM;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import static java.lang.Thread.MAX_PRIORITY;
 import static java.lang.Thread.yield;
 
@@ -73,6 +76,23 @@ public class CreateThread1 {
         };
         thread2.start();
 
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Asynchronous runnable task");
+            }
+        };
+
+        List<String> arrayList = Arrays.asList("a", "b", "c");
+
+        for (String str : arrayList) {
+            System.out.println(str);
+        }
+
+        arrayList.stream().forEach((str) -> {
+            System.out.println(str);
+        });
 
     }
 
