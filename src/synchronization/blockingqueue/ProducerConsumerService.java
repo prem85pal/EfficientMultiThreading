@@ -11,7 +11,7 @@ public class ProducerConsumerService {
     public static void main(String[] args) {
 
         BlockingQueue<Message> queue = new ArrayBlockingQueue<>(10);
-        //BlockingQueue<ComparableObj> queue = new PriorityBlockingQueue<>(10);
+        BlockingQueue<ComparableObj> queue1 = new PriorityBlockingQueue<>(10);
 
         new Thread(() -> {
 
@@ -39,7 +39,7 @@ public class ProducerConsumerService {
         new Thread(() -> {
             try {
                 Message msg;
-                while ((msg = queue.take()).getMsg() != "exit") {
+                while (!"exit".equals((msg = queue.take()).getMsg())) {
                     Thread.sleep(10);
                     System.out.println("Consumed " + msg.getMsg());
                 }
