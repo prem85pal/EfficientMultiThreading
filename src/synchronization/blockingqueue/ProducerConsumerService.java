@@ -49,7 +49,6 @@ public class ProducerConsumerService {
 
         }, "Consumer").start();
 
-
         System.out.println("Producer and Consumer has been started");
     }
 
