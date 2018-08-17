@@ -31,8 +31,6 @@ public class ProducerConsumerService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-
         }, "Producer").start();
 
 

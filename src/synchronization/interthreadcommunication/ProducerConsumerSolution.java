@@ -11,56 +11,54 @@ public class ProducerConsumerSolution {
         Vector<Integer> sharedQueue = new Vector<>();
         int size = 4;
 
-        new Thread("Producer") {
-            @Override
-            public void run() {
-                for (int i = 0; i < 7; i++) {
-                    System.out.println("Produced: " + i);
-                    try {
-                        while (sharedQueue.size() == size) {
-                            synchronized (sharedQueue) {
-                                System.out.println("Queue is full " + Thread.currentThread().getName()
-                                        + " is waiting , size: " + sharedQueue.size());
-
-                                sharedQueue.wait();
-                            }
-                        }
+        Runnable producer = () -> {
+            for (int i = 0; i < 7; i++) {
+                System.out.println("Produced: " + i);
+                try {
+                    while (sharedQueue.size() == size) {
                         synchronized (sharedQueue) {
-                            sharedQueue.add(i);
-                            sharedQueue.notifyAll();
-                        }
-                    } catch (InterruptedException ex) {
+                            System.out.println("Queue is full " + Thread.currentThread().getName()
+                                    + " is waiting , size: " + sharedQueue.size());
 
+                            sharedQueue.wait();
+                        }
                     }
+                    synchronized (sharedQueue) {
+                        sharedQueue.add(i);
+                        sharedQueue.notifyAll();
+                    }
+                } catch (InterruptedException ex) {
+
                 }
             }
-        }.start();
+        };
+        new Thread(producer, "producer").start();
 
-        new Thread("Consumer") {
-            @Override
-            public void run() {
 
-                while (true) {
-                    try {
-                        //wait if queue is empty
-                        while (sharedQueue.isEmpty()) {
-                            synchronized (sharedQueue) {
-                                System.out.println("Queue is empty " + Thread.currentThread().getName()
-                                        + " is waiting , size: " + sharedQueue.size());
-
-                                sharedQueue.wait();
-                            }
-                        }
-                        //Otherwise consume element and notify waiting producer
+        Runnable consumer = () -> {
+            while (true) {
+                try {
+                    //wait if queue is empty
+                    while (sharedQueue.isEmpty()) {
                         synchronized (sharedQueue) {
-                            sharedQueue.notifyAll();
-                            System.out.println("Consumed: " + sharedQueue.remove(0));
+                            System.out.println("Queue is empty " + Thread.currentThread().getName()
+                                    + " is waiting , size: " + sharedQueue.size());
+
+                            sharedQueue.wait();
                         }
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
                     }
+                    //Otherwise consume element and notify waiting producer
+                    synchronized (sharedQueue) {
+                        sharedQueue.notifyAll();
+                        System.out.println("Consumed: " + sharedQueue.remove(0));
+                    }
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
             }
-        }.start();
+        };
+
+        new Thread(consumer, "consumer").start();
     }
 }

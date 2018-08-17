@@ -10,7 +10,16 @@ public class ReceiveExceptionFromTask {
 
     public static void main(String[] args) {
 
-        FutureTask<Exception> exceptionReturningTask = new FutureTask<>(new ExceptionReturnTask());
+        Callable<Exception> callable = () -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                return e;
+            }
+            return new Exception();
+        };
+
+        FutureTask<Exception> exceptionReturningTask = new FutureTask<>(callable);
 
         new Thread(exceptionReturningTask).start();
 
@@ -27,15 +36,3 @@ public class ReceiveExceptionFromTask {
 }
 
 
-class ExceptionReturnTask implements Callable<Exception> {
-
-    @Override
-    public Exception call() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            return e;
-        }
-        return new Exception();
-    }
-}

@@ -22,7 +22,7 @@ class StopTask implements Runnable {
 
     private boolean exist = false;
 
-    public void exit(boolean bExit) {
+    void exit(boolean bExit) {
         this.exist = bExit;
     }
 
